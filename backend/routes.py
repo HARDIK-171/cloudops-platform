@@ -1,6 +1,6 @@
 from flask import jsonify
 from config import APP_NAME, VERSION
-
+from system import get_system_metrics
 
 def register_routes(app):
 
@@ -10,6 +10,9 @@ def register_routes(app):
             "application": APP_NAME,
             "message": "Welcome to CloudOps Platform"
         })
+    @app.route("/metrics")
+    def metrics():
+        return jsonify(get_system_metrics())
 
     @app.route("/health")
     def health():
