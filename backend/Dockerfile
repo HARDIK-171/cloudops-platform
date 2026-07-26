@@ -7,8 +7,8 @@ WORKDIR /app
 # Copy requirements first
 COPY requirements.txt .
 
-# Install Python packages
-RUN pip install --no-cache-dir -r requirements.txt
+# Install Python packages and gunicorn
+RUN pip install --no-cache-dir -r requirements.txt gunicorn
 
 # Copy entire backend
 COPY . .
@@ -16,5 +16,5 @@ COPY . .
 # Expose Flask Port
 EXPOSE 5000
 
-# Start Flask
-CMD ["python", "app.py"]
+# Start Gunicorn server (production ready)
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "4", "app:create_app()"]
