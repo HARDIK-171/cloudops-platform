@@ -14,8 +14,14 @@ def get_system_metrics():
     mem = psutil.virtual_memory()
     swap = psutil.swap_memory()
     
+    import os
+    
     # Disk
-    disk_usage = psutil.disk_usage("/")
+    try:
+        disk_usage = psutil.disk_usage(os.path.abspath(os.sep))
+    except Exception:
+        # Fallback if abspath(os.sep) fails on some environments
+        disk_usage = psutil.disk_usage("C:\\" if os.name == 'nt' else "/")
     disk_io = psutil.disk_io_counters()
     
     partitions = []
